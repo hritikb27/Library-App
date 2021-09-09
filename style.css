@@ -1,0 +1,17 @@
+.books{
+    display: flex;
+}
+
+.book-card{
+    display: flex;
+    flex-flow: column;
+    background-color: lightgray;
+    padding: 10px;
+    margin: 20px;
+    min-width: 12rem;
+    min-height: 15rem;
+    box-sizing: border-box;
+    border: 2px solid lightgray;
+    outline: 5px solid black;
+    
+}
