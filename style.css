@@ -15,3 +15,15 @@
     outline: 5px solid black;
     
 }
+
+#submit{
+    width: 4vw;
+}
+
+.read{
+    background-color: green;
+}
+
+.notread{
+    background-color: red;
+}

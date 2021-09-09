@@ -6,22 +6,30 @@ const submit = document.querySelector('#submit');
 const inputs = document.getElementsByTagName('input');
 const Books = document.querySelector('.books');
 const form = document.querySelector('form');
+const status = document.querySelector('#status')
 
 let round = 0;
 let storeData = [];
-let info = ['Title', 'Author', 'Pages'];
+let storeStatus = [];
+let info = ['Title', 'Author', 'Pages', 'Read-Status'];
 
-const createBook = function (title, writer, page,){
+const createBook = function (title, writer, page, status){
     this.title= title;  
     this.writer=writer;
-    this.page=page;     
+    this.page=page;
 }
+
 
 submit.addEventListener('click', ()=>{
     const book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
     storeData.push(book1);
+    if(bookName.value){
+        displayBooks();
+    }else{
+        alert('Add a book name please')
+    }
     form.reset();
-    displayBooks();
+
 })
 
 function displayBooks(){
@@ -39,5 +47,17 @@ function displayBooks(){
         i++;
     }
 
+    if(status.checked===true){
+        const h3 = document.createElement('h3');
+        h3.setAttribute('class', 'read')
+        h3.innerHTML = `Status: Read`;
+        data.appendChild(h3);
+    }
+    else if(!status.checked){
+        const h3 = document.createElement('h3');
+        h3.setAttribute('class', 'notread')
+        h3.innerHTML = `Status: Not Read`;
+        data.appendChild(h3);
+    }
     round += 1;
 }
