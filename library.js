@@ -29,7 +29,7 @@ close.addEventListener('click', ()=>{
     content.style.display = 'none';
 })
 
-const createBook = function (title, writer, page, status){
+const createBook = function (title, writer, page,){
     this.title= title;  
     this.writer=writer;
     this.page=page;
@@ -37,14 +37,14 @@ const createBook = function (title, writer, page, status){
 
 
 submit.addEventListener('click', ()=>{
-    const book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
-    storeData.push(book1);
-    if(bookName.value){
-        displayBooks();
-    }else{
+    if(!bookName.value){
         alert('Add a book name please')
+    }else{
+        const book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
+        storeData.push(book1);
+        displayBooks();
+        form.reset();
     }
-    form.reset();
 
 })
 
@@ -58,22 +58,24 @@ function displayBooks(){
 
     for(let book of n){
         const h3 = document.createElement('h3');
-        h3.innerHTML = `${info[i]}: ${book}`;
+        h3.textContent = `${info[i]}: ${book}`;
         data.appendChild(h3);
         i++;
     }
 
     if(status.checked===true){
-        const h3 = document.createElement('h3');
-        h3.setAttribute('class', 'read')
-        h3.innerHTML = `Status: Read`;
-        data.appendChild(h3);
+        const rStatus = document.createElement('button');
+        rStatus.setAttribute('class', 'read')
+        readStatus = document.querySelector('.read');
+        rStatus.textContent = 'Status: Read';
+        data.appendChild(rStatus);
     }
     else if(!status.checked){
         const h3 = document.createElement('h3');
         h3.setAttribute('class', 'notread')
-        h3.innerHTML = `Status: Not Read`;
+        h3.textContent = 'Status: Not Read';
         data.appendChild(h3);
     }
     round += 1;
 }
+
