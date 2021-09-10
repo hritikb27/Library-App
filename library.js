@@ -12,6 +12,7 @@ const content = document.querySelector('.container');
 const close = document.querySelector('#close');
 let round = 0;
 let readStatus;
+let book1;
 
 // Data Storage
 let storeData = [];
@@ -45,7 +46,7 @@ submit.addEventListener('click', ()=>{
     if(!bookName.value){
         alert('Add a book name please')
     }else{
-        const book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
+        book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
         storeData.push(book1);
         displayBooks();
         form.reset();
@@ -101,5 +102,15 @@ function displayBooks(){
         }
         data.appendChild(notStatus);
     }
+    
+    const removeBook = document.createElement('button');
+    removeBook.textContent = 'Remove'
+    removeBook.setAttribute('class', 'remove-book');
+    removeBook.onclick = (e)=>{
+        Books.removeChild(data)
+        storeData.splice(book1)
+    }
+    data.appendChild(removeBook)
+
     round += 1;
 }
