@@ -6,12 +6,28 @@ const submit = document.querySelector('#submit');
 const inputs = document.getElementsByTagName('input');
 const Books = document.querySelector('.books');
 const form = document.querySelector('form');
-const status = document.querySelector('#status')
+const status = document.querySelector('#status');
+const content = document.querySelector('.container');
+const close = document.querySelector('#close');
 
 let round = 0;
 let storeData = [];
 let storeStatus = [];
 let info = ['Title', 'Author', 'Pages', 'Read-Status'];
+
+newBook.addEventListener('click', ()=>{
+    content.style.display = 'block';
+})
+
+window.onclick = function(event){
+    if(event.target == content){
+        content.style.display = 'none';
+    }
+}
+
+close.addEventListener('click', ()=>{
+    content.style.display = 'none';
+})
 
 const createBook = function (title, writer, page, status){
     this.title= title;  

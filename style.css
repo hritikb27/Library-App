@@ -1,5 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+*{
+    background-color: #85dcbd;
+    font-family: 'Oswald', sans-serif;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 4rem;
+    margin: auto;
+}
+
 .books{
     display: flex;
+}
+
+.container{
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.form{
+    display: flex;
+    flex-flow: column;
+    background-color: #e27d60;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.form label{
+    background-color: #e8a87c;
+}
+
+.form input{
+    background-color: whitesmoke;
+}
+
+#new-book{
+    background-color: #e27d60;
+    display: flex;
+    color: white;
+    border-color: whitesmoke;
+    text-align: center;
+    margin: auto;
+    font-size: 1rem;
+    min-width: 6rem;
+    min-height: 2rem;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .book-card{
@@ -17,7 +89,7 @@
 }
 
 #submit{
-    width: 4vw;
+    width: 100%;
 }
 
 .read{
