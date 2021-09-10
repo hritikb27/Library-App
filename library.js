@@ -66,15 +66,14 @@ function displayBooks(){
     if(status.checked===true){
         const rStatus = document.createElement('button');
         rStatus.setAttribute('class', 'read')
-        readStatus = document.querySelector('.read');
         rStatus.textContent = 'Status: Read';
         data.appendChild(rStatus);
     }
     else if(!status.checked){
-        const h3 = document.createElement('h3');
-        h3.setAttribute('class', 'notread')
-        h3.textContent = 'Status: Not Read';
-        data.appendChild(h3);
+        const notStatus = document.createElement('button');
+        notStatus.setAttribute('class', 'notread')
+        notStatus.textContent = 'Status: Not Read';
+        data.appendChild(notStatus);
     }
     round += 1;
 }
