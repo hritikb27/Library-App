@@ -11,12 +11,14 @@ const status = document.querySelector('#status');
 const content = document.querySelector('.container');
 const close = document.querySelector('#close');
 let round = 0;
-let readStatus;
 let book1;
 
 // Data Storage
-let storeData = [];
-let info = ['Title', 'Author', 'Pages'];
+let storeData = [{title: 'Narnia', writer: 'C.S. Lewis', page: '768', status: true}];
+let info = ['Title', 'Author', 'Pages', 'Status'];
+
+// Initial Function Call for Demo Book
+displayBooks();
 
 // Add a Book Event Listener
 newBook.addEventListener('click', ()=>{
@@ -24,8 +26,8 @@ newBook.addEventListener('click', ()=>{
 })
 
 // Closing Event Listeners
-window.onclick = function(event){
-    if(event.target == content){
+content.onclick = function(event){
+    if(event.target.className === 'container'){
         content.style.display = 'none';
     }
 }
@@ -35,18 +37,23 @@ close.addEventListener('click', ()=>{
 })
 
 // Book Constructor
-const createBook = function (title, writer, page,){
+const createBook = function (title, writer, page, status){
     this.title= title;  
     this.writer=writer;
     this.page=page;
+    this.status=status;
 }
 
 // Submit Event Listener
 submit.addEventListener('click', ()=>{
     if(!bookName.value){
-        alert('Add a book name please')
-    }else{
-        book1 = new createBook(bookName.value, author.value, pages.valueAsNumber);
+        alert('Add a book name please');
+    }
+    if(!pages.valueAsNumber){
+        alert('Add amount of Pages');
+    }
+    else{
+        book1 = new createBook(bookName.value, author.value, pages.valueAsNumber,status.checked);
         storeData.push(book1);
         displayBooks();
         form.reset();
@@ -60,47 +67,31 @@ function displayBooks(){
     data.setAttribute('class', 'book-card');
     Books.appendChild(data);
 
-    let n = Object.values(storeData[round]);
+    let n = storeData[round];
     let i =0;
 
-    for(let book of n){
-        const h3 = document.createElement('h3');
-        h3.textContent = `${info[i]}: ${book}`;
-        data.appendChild(h3);
-        i++;
-    }
-
-    if(status.checked===true){
-        readStatus = document.createElement('button');
-        readStatus.setAttribute('class', 'read')
-        readStatus.textContent = 'Status: Read';
-        readStatus.onclick = (e)=>{
-            if(readStatus.textContent =='Status: Read'){
-                readStatus.textContent = 'Status: Not Read';
-                readStatus.setAttribute('class', 'notread')
-            }
-            else{
-                readStatus.textContent = 'Status: Read';
-                readStatus.setAttribute('class', 'read')
-            }
+    for(let book in n){
+        if(book.includes('status')){
+            const readStatus = document.createElement('button');
+            const isRead = n.status ? 'Read' : 'Not Read'
+            const isReadClass = n.status ? 'read' : 'notread';
+            readStatus.setAttribute('class', isReadClass)
+            readStatus.textContent = `Status: ${isRead}`;
+            readStatus.onclick = (e)=>{
+                const content = readStatus.textContent;
+                const textContent = content === 'Status: Read' ? 'Status: Not Read' : 'Status: Read';
+                const classContent = content === 'Status: Read' ? 'notread' : 'read';
+                readStatus.textContent = textContent
+                readStatus.classList.remove()
+                readStatus.setAttribute('class', classContent);
         }
         data.appendChild(readStatus);
-    }
-    else if(!status.checked){
-        const notStatus = document.createElement('button');
-        notStatus.setAttribute('class', 'notread')
-        notStatus.textContent = 'Status: Not Read';
-        notStatus.onclick = (e)=>{
-            if(notStatus.textContent == 'Status: Not Read'){
-                notStatus.textContent = 'Status: Read';
-                notStatus.setAttribute('class', 'read')
-            }else{
-                notStatus.textContent = 'Status: Not Read';
-                notStatus.setAttribute('class', 'notread')
-            }
-            
+        continue;
         }
-        data.appendChild(notStatus);
+        const h3 = document.createElement('h3');
+        h3.textContent = `${info[i]}: ${n[book]}`;
+        data.appendChild(h3);
+        i++;        
     }
     
     const removeBook = document.createElement('button');
