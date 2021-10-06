@@ -3,6 +3,7 @@ const newBook = document.querySelector('#new-book');
 const bookName =  document.querySelector('#book-name');
 const author = document.querySelector('#author');
 const pages = document.querySelector('#pages');
+const serialNumber = document.querySelector('#serial');
 const submit = document.querySelector('#submit');
 const inputs = document.getElementsByTagName('input');
 const Books = document.querySelector('.books');
@@ -11,28 +12,40 @@ const status = document.querySelector('#status');
 const content = document.querySelector('.container');
 const close = document.querySelector('#close');
 let book2;
-let book = 'book';
-let info = ['Title', 'Author', 'Pages', 'Status'];
+// let book = 'book';
+let info = ['Title', 'Author', 'Pages', 'SerialNo', 'Status'];
 
 // Data Storage
-let getData = JSON.parse(localStorage.getItem('book'));
+
 
 // Book Constructor
 class createBook {
-    constructor(title, writer, page, status){
+    constructor(title, writer, page, serialNumber, status){
     this.title= title;  
     this.writer=writer;
     this.page=page;
+    this.serialNumber=serialNumber;
     this.status=status;
+    }
+}
+
+class UI {
+
+    static checkDemoBook(){
+        let getData = JSON.parse(localStorage.getItem('book'));
+        if(getData==null||getData.length<1){
+            Store.addBook({title: 'Narnia', writer: 'C.S. Lewis', page: '768', serialNumber: '1', status: true});
+        }else{
+            UI.displayBooks();
+        }
     }
 
     // Function for Displaying Books on DOM
-    addBookToDisplay(giveBook){
+    static addBookToDisplay(giveBook){
         const data = document.createElement('div');
         data.setAttribute('class', 'book-card');
         Books.appendChild(data);
         let j=0;
-
         for(let book in giveBook){
             if(book.includes('status')){
                 const readStatus = document.createElement('button');
@@ -48,46 +61,73 @@ class createBook {
                     readStatus.classList.remove()
                     readStatus.setAttribute('class', classContent);
             }
-            data.appendChild(readStatus);
+            data.appendChild(readStatus); 
+            j++;
             continue;
             }
             const h3 = document.createElement('h3');
+            // console.log(book)
             h3.textContent = `${info[j]}: ${giveBook[book]}`;
             data.appendChild(h3);
-            j++; 
+            j++;
         }
+
         const removeBook = document.createElement('button');
-            removeBook.textContent = 'Remove'
-            removeBook.setAttribute('class', 'remove-book');
-            removeBook.onclick = (e)=>{
-                console.log(e.target.parentNode)
-                Books.removeChild(data)
-                console.log(localStorage.removeItem(e.target.parentNode))
-        }
-        data.appendChild(removeBook)
+        removeBook.textContent = 'Remove';
+        removeBook.setAttribute('class', 'remove-book');
+        data.appendChild(removeBook);
     }
 
-    displayBooks(){
-        getData.forEach((book) => {
+    static removeBook(target){
+        if(target.textContent=='Remove'){
+            const removeItem = target.parentElement;
+            Books.removeChild(removeItem);
+        }
+    }
+
+    static displayBooks(){
+        const book = JSON.parse(localStorage.getItem('book'));
+        book.forEach((book) => {
             this.addBookToDisplay(book);
         });
     }
+}
 
-    checkDemoBook(){
-        if(getData===null){
-            const bookData = [{title: 'Narnia', writer: 'C.S. Lewis', page: '768', status: true}];
-            localStorage.setItem('book', JSON.stringify(bookData));
-            this.displayBooks();
-            console.log(getData)
+class Store{
+    static getBook(){
+        let book;
+        if(localStorage.getItem('book')===null){
+            book = [];
         }else{
-            this.displayBooks();
+            book = JSON.parse(localStorage.getItem('book'));
         }
+
+        return book;
+    }
+
+    static addBook(book){
+        UI.addBookToDisplay(book);
+        const booksArray = this.getBook();
+        booksArray.push(book);
+        localStorage.setItem('book', JSON.stringify(booksArray));
+    }
+
+    static removeBook(serial){
+        const booksArray = this.getBook();
+        booksArray.forEach((book, index)=>{
+            if(book.serialNumber==serial){
+                booksArray.splice(index, 1);
+            }
+            console.log(booksArray)
+        })
+        
+        localStorage.setItem('book', JSON.stringify(booksArray))
+        console.log(booksArray)
     }
 }
 
 // Initial Function Call for Demo Book
-const demoBook = new createBook();
-demoBook.checkDemoBook();
+UI.checkDemoBook();
 
 // Submit Event Listener
 submit.addEventListener('click', ()=>{
@@ -98,10 +138,9 @@ submit.addEventListener('click', ()=>{
         alert('Add amount of Pages');
     }
     else{
-        book2 = new createBook(bookName.value, author.value, pages.valueAsNumber,status.checked);
-        getData.push(book2);
-        localStorage.setItem('book', JSON.stringify(getData));
-        book2.addBookToDisplay(book2);
+        book2 = new createBook(bookName.value, author.value, pages.valueAsNumber, serialNumber.valueAsNumber, status.checked);
+        console.log(book2)
+        Store.addBook(book2)
         form.reset();
     }
 
@@ -121,4 +160,9 @@ content.onclick = function(event){
 
 close.addEventListener('click', ()=>{
     content.style.display = 'none';
+})
+
+Books.addEventListener('click', (e)=>{
+    UI.removeBook(e.target);
+    Store.removeBook(e.target.parentElement.childNodes[3].textContent.split(' ')[1])
 })
