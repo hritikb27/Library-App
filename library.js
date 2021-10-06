@@ -101,7 +101,7 @@ submit.addEventListener('click', ()=>{
         book2 = new createBook(bookName.value, author.value, pages.valueAsNumber,status.checked);
         getData.push(book2);
         localStorage.setItem('book', JSON.stringify(getData));
-        addBookToDisplay(book2);
+        book2.addBookToDisplay(book2);
         form.reset();
     }
 
